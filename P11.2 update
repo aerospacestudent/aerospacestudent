@@ -1,0 +1,39 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+res=100       #resulution of graph
+
+#rho= np.arange(0.9, 22, 0.1)              # 1mg/mm^3
+rho=np.linspace(0.9,22,res)                #plotter
+
+#assuming micrometeorite as spheres
+
+plt.figure(figsize=(30,20))
+plt.title('spherical Micrometeor size against density for different weights',fontsize=20)
+plt.xlim([0,15])
+                # plt.ylim(ymin=0,ymax=rho[-1]) untere variante kürzer
+plt.ylim([0,rho[-1]])
+
+
+plt.xlabel('radius in mm for a Meteor')
+plt.ylabel(r'density in $mg/mm^3$')
+
+for i, m_i in enumerate(np.arange(5,10000,2000)):
+    t=format(m_i,'.1E')
+    plt.plot(pow((3/4/np.pi/rho*m_i),1/3), rho, label='m='+str(t)+'mg')
+
+#plt.annotate('gold', xy=(1.1, 19.8), xytext=(7, 19),
+ #            arrowprops=dict(facecolor='yellow', width=3),
+  #           )
+
+plt.hlines(7.8,xmin=0,xmax=rho[-1], zorder=-10,color='grey',label='aluminium')   #rho[-1] für letztes element im array #zorder als hintergrund befehl 
+plt.annotate('AL', xy=(1.1, 19.8), xytext=(1, 8))
+plt.hlines(19.8,xmin=0,xmax=rho[-1], zorder=-10,color='grey',label='gold')   #rho[-1] für letztes element im array #zorder als hintergrund befehl 
+plt.annotate('gold', xy=(1.1, 19.8), xytext=(1, 20))
+
+
+plt.grid(True)
+
+plt.legend()
+plt.tight_layout(pad=10)      # Falls achsenbeschriftungen etc. mit Zahlen kollidieren
+plt.show()
