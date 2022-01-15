@@ -1,0 +1,81 @@
+import numpy as np
+import matplotlib as plt
+pi = np.pi
+def sin(x) : return np.sin(x)
+a_p='venus' # arrival planet
+l_p='earth' #launch planet
+
+ms= 132712439935.5 #µ_sun
+
+rv=108.208*10**6 #km
+vv=35.0308 #km/s
+
+
+re=149.598*10**6 #km
+ve= 29.7847 #km/s
+
+alpha=0 #angle between planetary planes here as assumption=0
+a=(rv+re)/2 #semi-major-axis 
+
+v_peri=(2*ms/rv -ms/a)**(1/2) #velocity unbreaked at pericenter of transfer ellipse
+vi= (ms/a)**(1/2) #mean velocity
+T=2*pi*a/vi
+t=T/2
+td=t/60/60/24
+t=format(t,'.4E')
+td=format(td,'.6')
+#calculation of Hyperbolic exess velocities and C3
+v_apo=(2*ms/re -ms/a)**(1/2) #S/C Orbital velocity at Apocentrum
+
+#code for inbound Maneuver!
+
+x=(v_apo-ve)/ve*100
+print('Ratio of V apo/Vearth',format(x,'.5'),'%')
+if v_apo > ve:
+    vsc=v_apo
+    h=ve*sin(alpha)
+    vx=vsc-ve
+    vinf=(vx**2+h**2)**(1/2)
+    controll='in'
+if v_apo < ve:
+    vsc=v_apo
+    h=vsc*sin(alpha)
+    vx=ve-vsc
+    vinf=(vx**2+h**2)**(1/2)
+    controll='against'
+    
+if v_peri > vv:
+    vsc=v_peri
+    h=vv*sin(alpha)
+    vx=vsc-vv
+    vinf_v=(vx**2+h**2)**(1/2)
+    controll_v='in'
+if v_peri < vv:
+    vsc=v_peri
+    h=vsc*sin(alpha)
+    vx=vv-vsc
+    vinf_v=(vx**2+h**2)**(1/2)
+    controll_v='against'
+    
+c3=vinf**2
+
+
+print('a is :',format(a,'.4E'),'km')
+print('Vperi=',format(v_peri,'.4'),'km/s')
+print('deltaV for intersection at Venus is:',format(dV,'.4'),'km/s against velocity direction')
+print('Transfer Duration is',t,'s or',(td),'Days')
+print('\n','#code for inbound Maneuver!#','\n')
+
+print('Velocity at Apocentrum:',format(v_apo,'.4')+str('km/s'),'(',l_p,')')
+print('Velocity at Pericentrum:',format(v_peri,'.4')+str('km/s'),'(',a_p,')','\n')
+
+vinf=format(vinf,'.5')
+print('V_inf is:',str(vinf)+str('km/s'),'for',l_p)
+print('Thrust Maneuver',controll,'Orbital Velocity direction of '+str(l_p))
+
+
+vinf_v=format(vinf_v,'.5')
+print('\n','V_inf is:',str(vinf_v)+str('km/s'),'for',a_p)
+print('Thrust Maneuver',controll_v,'Orbital Velocity direction of '+str(a_p))
+
+print('needed C3 is',str(c3)+str('km^2/s^2'))
